@@ -1,0 +1,37 @@
+---
+description: Domínio e arquitetura do Meeting Cost CLI ao editar arquivos em src/
+globs: src/**
+alwaysApply: false
+---
+
+# Domínio e arquitetura (`src/`)
+
+## Separação de responsabilidades
+
+- `src/meetingCost.js`: única fonte de regras de negócio. Exporta a função pura
+  `calculateMeetingCost`. Sem `process.argv`, sem `console.log`, sem I/O.
+- `src/index.js`: CLI apenas — lê `process.argv`, converte com `Number`, chama
+  o domínio, formata saída em BRL. Não valida regras de negócio.
+
+## Invariantes de `calculateMeetingCost`
+
+- Entradas (`participants`, `durationMinutes`, `hourlyRate`) devem ser `number`
+  finitos (`Number.isFinite`); caso contrário, lance `TypeError`.
+- `participants >= 1`, `durationMinutes > 0`, `hourlyRate >= 0` (zero permitido);
+  violações lançam `RangeError`.
+- Fórmula: `hours = durationMinutes / 60`;
+  `totalCost = participants * hours * hourlyRate`.
+- Função pura: mesma entrada → mesma saída; sem efeitos colaterais.
+
+## Erros na CLI
+
+- Capturar em `try/catch`, imprimir `Erro: <mensagem>` via `console.error`,
+  definir `process.exitCode = 1` (nunca `process.exit()`).
+- Menos de três argumentos: mensagem contendo `USAGE`.
+- Mensagens em português, específicas ao campo.
+
+## Restrições
+
+- ESM apenas (`import`/`export`).
+- Zero dependências de runtime; Node.js >= 24.
+- Não mover validação de domínio para `src/index.js`.
