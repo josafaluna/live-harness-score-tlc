@@ -14,6 +14,7 @@ Sem persistência, HTTP, autenticação ou integrações. Não invente features.
 |---------|--------|
 | `src/index.js` | CLI (argv, saída, erros) — sem regras de negócio |
 | `src/meetingCost.js` | Domínio puro: `calculateMeetingCost` |
+| `test/` | Testes com o runner nativo do Node.js |
 | `.agents/rules/` | Rules com escopo de caminho |
 | `.agents/skills/` | Skills acionáveis sob demanda |
 | `.agents/workflows/` | Workflows explícitos (ex.: verificação) |
@@ -23,10 +24,15 @@ Sem persistência, HTTP, autenticação ou integrações. Não invente features.
 ```bash
 npm start -- <participantes> <duracao_minutos> <custo_por_hora>
 # ex.: npm start -- 5 30 120
+
+npm test
+npm run lint
+npm run format
+npm run typecheck
+npm run check
 ```
 
-Único script npm: `start`. Não existem `test`, `lint`, `format` ou `typecheck`
-— trate-os como pendentes; não invente comandos. Para verificar, use
+`check` executa lint, typecheck e testes. Para o fluxo de verificação, use
 `.agents/workflows/verify.md`.
 
 ## Harness
@@ -40,7 +46,8 @@ npm start -- <participantes> <duracao_minutos> <custo_por_hora>
 
 - Zero dependências de runtime sem justificativa explícita; se adicionar,
   inclua lockfile na mesma mudança.
-- Não crie testes, lint, CI, hooks, MCP ou subagentes sem pedido explícito.
+- Não crie hooks, MCP, subagentes, pre-commit ou o workflow do Harness Score
+  sem pedido explícito.
 - Não altere `package.json`, `README.md`, `PROJETO.md` ou `LICENSE` sem pedido.
 - Não faça commit automático.
 - Erros na CLI: `Erro: <mensagem>` em stderr e `process.exitCode = 1`.

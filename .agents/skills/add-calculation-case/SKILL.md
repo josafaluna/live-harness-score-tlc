@@ -46,16 +46,12 @@ a arquitetura da CLI.
 
 5. **Verifique com o que existe**
    - Siga `.agents/workflows/verify.md`.
-   - Comando real disponível hoje:
-     `npm start -- <participantes> <duracao_minutos> <custo_por_hora>`
-   - Smoke de sucesso (ex.: `npm start -- 5 30 120` → custo total R$ 300,00).
-   - Smoke de erro (ex.: participantes `0`, duração `0`, custo `-1`, ou
-     argumentos faltando) → `Erro: ...` e exit code ≠ 0.
-   - Não invente `npm test`, `npm run lint` ou `npm run typecheck` enquanto
-     esses scripts não existirem no `package.json`.
+   - Cubra o caso novo em `test/` quando alterar regra ou validação.
+   - Rode `npm run check` (lint, typecheck e testes).
+   - Smoke opcional da CLI: `npm start -- <participantes> <duracao_minutos> <custo_por_hora>`.
 
 6. **Checklist antes de encerrar**
    - [ ] Domínio permanece puro e exportado.
    - [ ] CLI não ganhou regra de negócio.
    - [ ] Mensagens de erro em português e específicas ao campo.
-   - [ ] Verificação manual via `npm start` (e sensores pendentes documentados).
+   - [ ] `npm run check` passou.

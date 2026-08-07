@@ -6,13 +6,25 @@
  */
 
 /**
+ * @typedef {object} MeetingCostInput
+ * @property {number} participants - Número de participantes (>= 1).
+ * @property {number} durationMinutes - Duração da reunião em minutos (> 0).
+ * @property {number} hourlyRate - Custo por hora, por participante (>= 0).
+ */
+
+/**
+ * @typedef {object} MeetingCostResult
+ * @property {number} participants
+ * @property {number} durationMinutes
+ * @property {number} hourlyRate
+ * @property {number} totalCost
+ */
+
+/**
  * Calcula o custo total de mão de obra de uma reunião.
  *
- * @param {object} input
- * @param {number} input.participants - Número de participantes (>= 1).
- * @param {number} input.durationMinutes - Duração da reunião em minutos (> 0).
- * @param {number} input.hourlyRate - Custo por hora, por participante (>= 0).
- * @returns {{ participants: number, durationMinutes: number, hourlyRate: number, totalCost: number }}
+ * @param {MeetingCostInput} input
+ * @returns {MeetingCostResult}
  * @throws {TypeError} Se algum valor não for um número finito.
  * @throws {RangeError} Se algum valor estiver fora do intervalo permitido.
  */
@@ -37,6 +49,11 @@ export function calculateMeetingCost({ participants, durationMinutes, hourlyRate
   return { participants, durationMinutes, hourlyRate, totalCost };
 }
 
+/**
+ * @param {unknown} value
+ * @param {string} label
+ * @returns {asserts value is number}
+ */
 function assertFiniteNumber(value, label) {
   if (typeof value !== 'number' || !Number.isFinite(value)) {
     throw new TypeError(`O valor de "${label}" deve ser um número finito.`);

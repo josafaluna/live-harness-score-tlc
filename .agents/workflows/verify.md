@@ -13,36 +13,32 @@ entrypoint. Não invente scripts.
 |--------|---------|--------|
 | Execução CLI | `npm start -- <participantes> <duracao_minutos> <custo_por_hora>` | Disponível |
 | Entrypoint | `node src/index.js <participantes> <duracao_minutos> <custo_por_hora>` | Disponível |
-| Testes automatizados | `npm test` | Pendente — script inexistente |
-| Lint | `npm run lint` | Pendente — script inexistente |
-| Typecheck | `npm run typecheck` | Pendente — script inexistente |
-| Format | `npm run format` | Pendente — script inexistente |
+| Testes automatizados | `npm test` | Disponível |
+| Lint | `npm run lint` | Disponível |
+| Typecheck | `npm run typecheck` | Disponível |
+| Format | `npm run format` | Disponível |
+| Suite completa | `npm run check` | Disponível (`lint` + `typecheck` + `test`) |
 
 ## Passos
 
-1. Confirme em `package.json` que o único script é `start`.
-2. Smoke de sucesso:
+1. Rode a suite de feedback:
+   ```bash
+   npm run check
+   ```
+2. Smoke de sucesso (opcional, se a CLI mudou):
    ```bash
    npm start -- 5 30 120
    ```
    Esperado: resumo com custo total `R$ 300,00` e exit code 0.
-3. Smoke de argumentos insuficientes:
-   ```bash
-   npm start -- 5 30
-   ```
-   Esperado: `Erro: ...` contendo `USAGE` e `process.exitCode = 1`.
-4. Smoke de regra de domínio (ex.: participantes inválidos):
+3. Smoke de erro (opcional, se parsing/erros mudaram):
    ```bash
    npm start -- 0 30 120
    ```
    Esperado: `Erro: ...` via stderr e exit code ≠ 0.
-5. Se a mudança alterou fórmula ou validação, repita smokes cobrindo o caso
-   novo (sucesso e falha).
-6. Registre explicitamente que testes, lint e typecheck estão **pendentes**
-   quando não houver scripts correspondentes — não os execute.
+4. Se alterou formatação ou tipagem isoladamente, use `npm run format`,
+   `npm run lint` ou `npm run typecheck` conforme o caso.
 
 ## Critério de conclusão
 
-- Smokes com comandos existentes passaram (ou falhas foram corrigidas).
-- Sensores ausentes listados como pendentes, sem comandos inventados.
+- `npm run check` passou (ou falhas foram corrigidas).
 - Nenhuma dependência de runtime adicionada sem pedido explícito.

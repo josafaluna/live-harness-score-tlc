@@ -5,10 +5,18 @@
  */
 import { calculateMeetingCost } from './meetingCost.js';
 
+/**
+ * @typedef {import('./meetingCost.js').MeetingCostResult} MeetingCostResult
+ */
+
 const USAGE =
   'Uso: npm start -- <participantes> <duracao_minutos> <custo_por_hora>\n' +
   'Exemplo: npm start -- 5 30 120';
 
+/**
+ * @param {string[]} argv
+ * @returns {{ participants: number, durationMinutes: number, hourlyRate: number }}
+ */
 function parseArgs(argv) {
   const [participantsRaw, durationRaw, hourlyRateRaw] = argv;
 
@@ -23,10 +31,18 @@ function parseArgs(argv) {
   };
 }
 
+/**
+ * @param {number} value
+ * @returns {string}
+ */
 function formatCurrency(value) {
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
+/**
+ * @param {MeetingCostResult} result
+ * @returns {void}
+ */
 function printResult(result) {
   console.log('Resumo da reunião');
   console.log('-----------------');
@@ -42,7 +58,8 @@ function main() {
     const result = calculateMeetingCost(input);
     printResult(result);
   } catch (error) {
-    console.error(`Erro: ${error.message}`);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(`Erro: ${message}`);
     process.exitCode = 1;
   }
 }
